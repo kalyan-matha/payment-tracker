@@ -6,6 +6,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import io.github.kalyan_matha.paymentsapi.payment.dto.CreatePaymentRequest;
 import io.github.kalyan_matha.paymentsapi.payment.dto.PaymentResponse;
+import jakarta.validation.Valid;
 
 import java.net.URI;
 import java.util.List;
@@ -29,7 +30,7 @@ public class PaymentController {
 
     //POST /api/payments -> 201 Created
     @PostMapping
-    public ResponseEntity<PaymentResponse> createPayment(@RequestBody CreatePaymentRequest request) {
+    public ResponseEntity<PaymentResponse> createPayment(@Valid @RequestBody CreatePaymentRequest request) {
         PaymentResponse created = paymentService.create(request);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
@@ -42,6 +43,7 @@ public class PaymentController {
     //GET /api/payments/{id} -> 200 OK (404 if not found)
     @GetMapping("/{id}")
     public PaymentResponse getPayment(@PathVariable("id") UUID id){
+        System.out.println("PaymentController.getPayment() called with id: " + id);
         return paymentService.get(id);
     }
     
